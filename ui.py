@@ -55,9 +55,9 @@ class UI:
                 except InvalidMoveException as exception:
                     print(exception)
             try:
-                self.__board.game_over()
+                self.__board.game_over(player_colour, computer_colour)
             except GameOverException as exception:
-                print(exception)
+                print("Game over! " , exception)
 
 if __name__ == "__main__":
     ui = UI()

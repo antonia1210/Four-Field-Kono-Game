@@ -23,9 +23,9 @@ class Board:
 
     def move_marble_piece(self, start_row, start_column, end_row, end_column):
         if self.get_piece(end_row, end_column) != '.':
-            raise InvalidMoveException("Destination cell is not empty")
+            raise InvalidMoveException("Invalid move. Destination cell is not empty")
         if self.get_piece(end_row, end_column) == '.':
-            raise InvalidMoveException("Cannot move an empty piece")
+            raise InvalidMoveException("Invalid move. Cannot move an empty piece")
         if abs(start_row-end_row) + abs(start_column-end_column) != 1:
             raise InvalidMoveException("Invalid move")
         self._board[end_row][end_column] = self._board[start_row][start_column]
@@ -34,8 +34,10 @@ class Board:
     def capture_marble_piece(self, start_row, start_column, end_row, end_column):
         middle_row = (end_row + start_row) // 2
         middle_column = (end_column + start_column) // 2
+        if (start_row != end_row) and (start_column != end_column):
+         raise InvalidMoveException("Invalid move. Cannot move diagonally")
         if self.get_piece(start_row, start_column) != self.get_piece(middle_row, middle_column):
-            raise InvalidMoveException("You must jump over one of your own marbles")
+            raise InvalidMoveException("Invalid move. You must jump over one of your own marbles")
         if self.get_piece(start_row, start_column) == 'W':
             if self.get_piece(end_row, end_column) == 'W':
                 raise InvalidMoveException("Cell must contain the opponents marble")
@@ -48,9 +50,9 @@ class Board:
     def count_marble_pieces(self, player):
         return sum(row.count(player) for row in self._board)
 
-    def game_over(self):
-        player_marble_count = self.count_marble_pieces('W')
-        computer_marble_count = self.count_marble_pieces('B')
+    def game_over(self, player_colour, computer_colour):
+        player_marble_count = self.count_marble_pieces(player_colour)
+        computer_marble_count = self.count_marble_pieces(computer_colour)
         if player_marble_count == 0:
             raise GameOverException("Computer won!")
         if computer_marble_count == 0:

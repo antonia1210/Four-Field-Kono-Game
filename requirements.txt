@@ -1,0 +1,9 @@
+#The game is played according to these rules.
+
+#Players decide what color marbles to play, and who goes first.
+#The board is completely filled with the 16 marbles in the beginning. Each player's marbles are set up on their half of the board.
+#Since the board is filled up in the beginning and hence no vacant holes, the first move by the first player will be a capturing move.
+#A capturing move requires a player's marble to jump over one of his own adjacent marbles orthogonally (not diagonally), and to land onto an enemy marble which is then removed from the board and replaced with the player's marble.
+#Only one marble can be used to capture or move per turn. Multiple captures are not allowed. Once a marble has captured one enemy marble, the turn is completed. Captures are not compulsory.
+#A marble can move orthogonally (not diagonally) one space per turn onto a vacant hole.
+#Players alternate their turns throughout the game.
