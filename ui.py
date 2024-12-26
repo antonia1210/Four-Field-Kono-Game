@@ -50,7 +50,7 @@ class UI:
                         print(exception)
             else:
                 try:
-                    self.__game.computer_move(computer_colour)
+                    self.__game.computer_move(player_colour, computer_colour)
                     human_turn = True
                     print("Board after computer move")
                     self.print_board()
@@ -77,8 +77,7 @@ class GUI:
     def __init__(self):
         pygame.init()
         self.screen = pygame.display.set_mode((SCREEN_SIZE, SCREEN_SIZE))
-        pygame.display.set_caption("Four-Field Kono")
-        self.clock = pygame.time.Clock()
+        pygame.display.set_caption("Four-Field Kono Game")
         self.board = Board()
         self.game = Game(self.board)
         self.selected_piece = None
@@ -155,7 +154,7 @@ class GUI:
     def switch_turns(self):
         self.current_player, self.opponent_player = self.opponent_player, self.current_player
         if self.current_player == 'B':
-            self.game.computer_move(self.current_player)
+            self.game.computer_move(self.opponent_player, self.current_player)
             self.switch_turns()
 
     def check_game_over(self):
@@ -175,7 +174,6 @@ class GUI:
                     self.handle_mouse_click(event.pos)
             self.draw_board()
             pygame.display.flip()
-            self.clock.tick(30)
         pygame.quit()
 
     def run(self):
