@@ -83,8 +83,11 @@ class GUI:
         self.selected_piece = None
         self.current_player = None
         self.opponent_player = None
+        self.computer_color = None
         self.color_selected = None
         self.game_running = True
+        self.game_over = False
+        self.clock = pygame.time.Clock()
 
     def color_selection(self):
         self.screen.fill(GRAY)
@@ -122,11 +125,13 @@ class GUI:
             if 100 <= mouse_position[0] <= 250 and 200 <= mouse_position[1] <= 300:
                 self.current_player = 'W'
                 self.opponent_player = 'B'
+                self.computer_color = 'B'
                 self.color_selected = True
                 self.start_game()
             elif 350 <= mouse_position[0] <= 500 and 200 <= mouse_position[1] <= 300:
                 self.current_player = 'B'
                 self.opponent_player = 'W'
+                self.computer_color = 'W'
                 self.color_selected = True
                 self.start_game()
             return
@@ -139,10 +144,10 @@ class GUI:
             try:
                 if abs(self.selected_piece[0] - row) == 2 or abs(self.selected_piece[1] - column) == 2:
                     self.game.player_capture(self.selected_piece[0], self.selected_piece[1], row, column, self.current_player)
-                    print("Player captured")
+                    print("Player captured a piece from row "+  str(row) + " column " + str(column))
                 else:
                     self.game.player_move(self.selected_piece[0], self.selected_piece[1], row, column, self.current_player)
-                    print("Player moved")
+                    print("Player moved a piece from row " + str(row) + " column " + str(column))
                 self.selected_piece = None
                 self.switch_turns()
             except (InvalidMoveException, OutOfBoundsException) as exception:
@@ -153,7 +158,7 @@ class GUI:
 
     def switch_turns(self):
         self.current_player, self.opponent_player = self.opponent_player, self.current_player
-        if self.current_player == 'B':
+        if self.current_player == self.computer_color:
             self.game.computer_move(self.opponent_player, self.current_player)
             self.switch_turns()
 
@@ -162,7 +167,15 @@ class GUI:
             self.board.game_over(self.current_player, self.opponent_player)
         except GameOverException as exception:
             print(exception)
+            self.game_over = True
             self.game_running = False
+            self.display_game_over_message()
+
+    def display_game_over_message(self):
+        self.screen.fill(WHITE)
+        font = pygame.font.Font(None, 36)
+        game_over_text = font.render("GAME OVER ", True, BLACK)
+        self.screen.blit(game_over_text, (150, 45))
 
     def start_game(self):
         while self.game_running:
@@ -173,6 +186,8 @@ class GUI:
                 elif event.type == MOUSEBUTTONDOWN:
                     self.handle_mouse_click(event.pos)
             self.draw_board()
+            if self.game_over:
+                self.display_game_over_message()
             pygame.display.flip()
         pygame.quit()
 
