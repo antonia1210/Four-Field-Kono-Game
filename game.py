@@ -34,5 +34,3 @@ class Game:
             self.__board.capture_marble_piece(start_row, start_column, end_row, end_column)
         else:
             raise InvalidMoveException("Can't move your opponents piece")
-
-

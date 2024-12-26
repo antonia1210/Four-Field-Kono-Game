@@ -24,7 +24,7 @@ class Board:
     def move_marble_piece(self, start_row, start_column, end_row, end_column):
         if self.get_piece(end_row, end_column) != '.':
             raise InvalidMoveException("Invalid move. Destination cell is not empty")
-        if self.get_piece(end_row, end_column) == '.':
+        if self.get_piece(start_row, start_column) == '.':
             raise InvalidMoveException("Invalid move. Cannot move an empty piece")
         if abs(start_row-end_row) + abs(start_column-end_column) != 1:
             raise InvalidMoveException("Invalid move")
